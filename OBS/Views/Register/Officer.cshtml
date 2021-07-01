@@ -1,0 +1,62 @@
+﻿@model OBS.Models.position
+
+@{
+    var values = ViewBag.OfficerRegister;
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div class="jumbotron">
+
+    @foreach (var item in ViewBag.Officer)
+    {
+        <h4>
+            @Html.Raw(item)
+        </h4>
+
+    }
+</div>
+@using (@Html.BeginForm("GetStudentList", "Register", FormMethod.Post))
+{
+    <div>
+        <h2>
+            Öğrenci Bilgilerini Düzenle
+        </h2>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Düzenle" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+@using (Html.BeginForm("GetEmployeeList", "Register", FormMethod.Post))
+{
+    <div>
+        <h2>
+        Çalışan Bilgilerini Düzenle
+        </h2>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Düzenle" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+}
+
+@using (@Html.BeginForm("EmployeeRegister", "Register", FormMethod.Post))
+{
+<div>
+    <h2>
+        Yeni Kullanıcı Ekle
+    </h2>
+    @Html.DropDownListFor(m => m.id, (IEnumerable<SelectListItem>)values, new { @class = "input100" })
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Kayıt Et" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}

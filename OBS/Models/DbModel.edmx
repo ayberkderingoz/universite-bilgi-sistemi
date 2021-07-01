@@ -1,0 +1,558 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ogrencisistemiModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="employee_name" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="employee_password" Type="blob" Nullable="false" />
+          <Property Name="employee_email" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="employee_tckn" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="employee_phoneno" Type="varchar" MaxLength="13" />
+          <Property Name="emoployee_status" Type="bit" Nullable="false" />
+          <Property Name="employee_lastchange" Type="datetime" Precision="0" />
+          <Property Name="employee_position" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="lesson_teacher">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="lesson_id" Type="int" />
+          <Property Name="teacher_id" Type="int" />
+          <Property Name="donem" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="lesson_teacher_lastchange" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="lessons">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="lesson_name" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="lesson_code" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="akts" Type="int" Nullable="false" />
+          <Property Name="lesson_lastchange" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="login">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="student_id" Type="int" />
+          <Property Name="teacher_id" Type="int" />
+          <Property Name="login" Type="bit" />
+          <Property Name="login_lastlogin" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="position">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="position_name" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="studentlessons">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="student_id" Type="int" />
+          <Property Name="teacher_lesson" Type="int" />
+          <Property Name="grade" Type="varchar" MaxLength="2" />
+          <Property Name="studentlesson_lastchange" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="students">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="student_no" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="student_password" Type="blob" Nullable="false" />
+          <Property Name="student_name" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="student_email" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="student_tckn" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="student_phoneno" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="student_status" Type="bit" Nullable="false" />
+          <Property Name="student_lastchange" Type="datetime" Precision="0" />
+        </EntityType>
+        <Association Name="fk_lesson_id_lessonteacher">
+          <End Role="lessons" Type="Self.lessons" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="lesson_teacher" Type="Self.lesson_teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lessons">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="lesson_teacher">
+              <PropertyRef Name="lesson_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_position">
+          <End Role="position" Type="Self.position" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="position">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="employee_position" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_student_id">
+          <End Role="students" Type="Self.students" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="login" Type="Self.login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="students">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="login">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_studentid">
+          <End Role="students" Type="Self.students" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="studentlessons" Type="Self.studentlessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="students">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="studentlessons">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_teacher_id">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="login" Type="Self.login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="login">
+              <PropertyRef Name="teacher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_teacher_id_lessonteacher">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="lesson_teacher" Type="Self.lesson_teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="lesson_teacher">
+              <PropertyRef Name="teacher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="teacher_lessons">
+          <End Role="lesson_teacher" Type="Self.lesson_teacher" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="studentlessons" Type="Self.studentlessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lesson_teacher">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="studentlessons">
+              <PropertyRef Name="teacher_lesson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ogrencisistemiModelStoreContainer">
+          <EntitySet Name="employee" EntityType="Self.employee" Schema="" store:Type="Tables" />
+          <EntitySet Name="lesson_teacher" EntityType="Self.lesson_teacher" Schema="" store:Type="Tables" />
+          <EntitySet Name="lessons" EntityType="Self.lessons" Schema="" store:Type="Tables" />
+          <EntitySet Name="login" EntityType="Self.login" Schema="" store:Type="Tables" />
+          <EntitySet Name="position" EntityType="Self.position" Schema="" store:Type="Tables" />
+          <EntitySet Name="studentlessons" EntityType="Self.studentlessons" Schema="" store:Type="Tables" />
+          <EntitySet Name="students" EntityType="Self.students" Schema="" store:Type="Tables" />
+          <AssociationSet Name="fk_lesson_id_lessonteacher" Association="Self.fk_lesson_id_lessonteacher">
+            <End Role="lessons" EntitySet="lessons" />
+            <End Role="lesson_teacher" EntitySet="lesson_teacher" />
+          </AssociationSet>
+          <AssociationSet Name="fk_position" Association="Self.fk_position">
+            <End Role="position" EntitySet="position" />
+            <End Role="employee" EntitySet="employee" />
+          </AssociationSet>
+          <AssociationSet Name="fk_student_id" Association="Self.fk_student_id">
+            <End Role="students" EntitySet="students" />
+            <End Role="login" EntitySet="login" />
+          </AssociationSet>
+          <AssociationSet Name="fk_studentid" Association="Self.fk_studentid">
+            <End Role="students" EntitySet="students" />
+            <End Role="studentlessons" EntitySet="studentlessons" />
+          </AssociationSet>
+          <AssociationSet Name="fk_teacher_id" Association="Self.fk_teacher_id">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="login" EntitySet="login" />
+          </AssociationSet>
+          <AssociationSet Name="fk_teacher_id_lessonteacher" Association="Self.fk_teacher_id_lessonteacher">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="lesson_teacher" EntitySet="lesson_teacher" />
+          </AssociationSet>
+          <AssociationSet Name="teacher_lessons" Association="Self.teacher_lessons">
+            <End Role="lesson_teacher" EntitySet="lesson_teacher" />
+            <End Role="studentlessons" EntitySet="studentlessons" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ogrencisistemiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="employee_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="employee_password" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="employee_email" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="employee_tckn" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="employee_phoneno" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="emoployee_status" Type="Boolean" Nullable="false" />
+          <Property Name="employee_lastchange" Type="DateTime" />
+          <Property Name="employee_position" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="position" Relationship="Self.fk_position" FromRole="employee" ToRole="position" />
+          <NavigationProperty Name="login" Relationship="Self.fk_teacher_id" FromRole="employee" ToRole="login" />
+          <NavigationProperty Name="lesson_teacher" Relationship="Self.fk_teacher_id_lessonteacher" FromRole="employee" ToRole="lesson_teacher" />
+        </EntityType>
+        <EntityType Name="lesson_teacher">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="lesson_id" Type="Int32" />
+          <Property Name="teacher_id" Type="Int32" />
+          <Property Name="donem" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lesson_teacher_lastchange" Type="DateTime" />
+          <NavigationProperty Name="employee" Relationship="Self.fk_teacher_id_lessonteacher" FromRole="lesson_teacher" ToRole="employee" />
+          <NavigationProperty Name="lessons" Relationship="Self.fk_lesson_id_lessonteacher" FromRole="lesson_teacher" ToRole="lessons" />
+          <NavigationProperty Name="studentlessons" Relationship="Self.teacher_lessons" FromRole="lesson_teacher" ToRole="studentlessons" />
+        </EntityType>
+        <EntityType Name="lessons">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="lesson_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lesson_code" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="akts" Type="Int32" Nullable="false" />
+          <Property Name="lesson_lastchange" Type="DateTime" />
+          <NavigationProperty Name="lesson_teacher" Relationship="Self.fk_lesson_id_lessonteacher" FromRole="lessons" ToRole="lesson_teacher" />
+        </EntityType>
+        <EntityType Name="login">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="student_id" Type="Int32" />
+          <Property Name="teacher_id" Type="Int32" />
+          <Property Name="login1" Type="Boolean" />
+          <Property Name="login_lastlogin" Type="DateTime" />
+          <NavigationProperty Name="employee" Relationship="Self.fk_teacher_id" FromRole="login" ToRole="employee" />
+          <NavigationProperty Name="students" Relationship="Self.fk_student_id" FromRole="login" ToRole="students" />
+        </EntityType>
+        <EntityType Name="position">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="position_name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="employee" Relationship="Self.fk_position" FromRole="position" ToRole="employee" />
+        </EntityType>
+        <EntityType Name="studentlessons">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="student_id" Type="Int32" />
+          <Property Name="teacher_lesson" Type="Int32" />
+          <Property Name="grade" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="studentlesson_lastchange" Type="DateTime" />
+          <NavigationProperty Name="lesson_teacher" Relationship="Self.teacher_lessons" FromRole="studentlessons" ToRole="lesson_teacher" />
+          <NavigationProperty Name="students" Relationship="Self.fk_studentid" FromRole="studentlessons" ToRole="students" />
+        </EntityType>
+        <EntityType Name="students">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="student_no" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="student_password" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="student_name" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="student_email" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="student_tckn" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="student_phoneno" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="student_status" Type="Boolean" Nullable="false" />
+          <Property Name="student_lastchange" Type="DateTime" />
+          <NavigationProperty Name="login" Relationship="Self.fk_student_id" FromRole="students" ToRole="login" />
+          <NavigationProperty Name="studentlessons" Relationship="Self.fk_studentid" FromRole="students" ToRole="studentlessons" />
+        </EntityType>
+        <Association Name="fk_position">
+          <End Role="position" Type="Self.position" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="position">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="employee_position" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_teacher_id">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="login" Type="Self.login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="login">
+              <PropertyRef Name="teacher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_teacher_id_lessonteacher">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="lesson_teacher" Type="Self.lesson_teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="lesson_teacher">
+              <PropertyRef Name="teacher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_lesson_id_lessonteacher">
+          <End Role="lessons" Type="Self.lessons" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="lesson_teacher" Type="Self.lesson_teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lessons">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="lesson_teacher">
+              <PropertyRef Name="lesson_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="teacher_lessons">
+          <End Role="lesson_teacher" Type="Self.lesson_teacher" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="studentlessons" Type="Self.studentlessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lesson_teacher">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="studentlessons">
+              <PropertyRef Name="teacher_lesson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_student_id">
+          <End Role="students" Type="Self.students" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="login" Type="Self.login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="students">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="login">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_studentid">
+          <End Role="students" Type="Self.students" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="studentlessons" Type="Self.studentlessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="students">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="studentlessons">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ogrencisistemiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="employee" EntityType="Self.employee" />
+          <EntitySet Name="lesson_teacher" EntityType="Self.lesson_teacher" />
+          <EntitySet Name="lessons" EntityType="Self.lessons" />
+          <EntitySet Name="login" EntityType="Self.login" />
+          <EntitySet Name="position" EntityType="Self.position" />
+          <EntitySet Name="studentlessons" EntityType="Self.studentlessons" />
+          <EntitySet Name="students" EntityType="Self.students" />
+          <AssociationSet Name="fk_position" Association="Self.fk_position">
+            <End Role="position" EntitySet="position" />
+            <End Role="employee" EntitySet="employee" />
+          </AssociationSet>
+          <AssociationSet Name="fk_teacher_id" Association="Self.fk_teacher_id">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="login" EntitySet="login" />
+          </AssociationSet>
+          <AssociationSet Name="fk_teacher_id_lessonteacher" Association="Self.fk_teacher_id_lessonteacher">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="lesson_teacher" EntitySet="lesson_teacher" />
+          </AssociationSet>
+          <AssociationSet Name="fk_lesson_id_lessonteacher" Association="Self.fk_lesson_id_lessonteacher">
+            <End Role="lessons" EntitySet="lessons" />
+            <End Role="lesson_teacher" EntitySet="lesson_teacher" />
+          </AssociationSet>
+          <AssociationSet Name="teacher_lessons" Association="Self.teacher_lessons">
+            <End Role="lesson_teacher" EntitySet="lesson_teacher" />
+            <End Role="studentlessons" EntitySet="studentlessons" />
+          </AssociationSet>
+          <AssociationSet Name="fk_student_id" Association="Self.fk_student_id">
+            <End Role="students" EntitySet="students" />
+            <End Role="login" EntitySet="login" />
+          </AssociationSet>
+          <AssociationSet Name="fk_studentid" Association="Self.fk_studentid">
+            <End Role="students" EntitySet="students" />
+            <End Role="studentlessons" EntitySet="studentlessons" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ogrencisistemiModelStoreContainer" CdmEntityContainer="ogrencisistemiEntities">
+          <EntitySetMapping Name="employee">
+            <EntityTypeMapping TypeName="ogrencisistemiModel.employee">
+              <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="employee_name" ColumnName="employee_name" />
+                <ScalarProperty Name="employee_password" ColumnName="employee_password" />
+                <ScalarProperty Name="employee_email" ColumnName="employee_email" />
+                <ScalarProperty Name="employee_tckn" ColumnName="employee_tckn" />
+                <ScalarProperty Name="employee_phoneno" ColumnName="employee_phoneno" />
+                <ScalarProperty Name="emoployee_status" ColumnName="emoployee_status" />
+                <ScalarProperty Name="employee_lastchange" ColumnName="employee_lastchange" />
+                <ScalarProperty Name="employee_position" ColumnName="employee_position" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="lesson_teacher">
+            <EntityTypeMapping TypeName="ogrencisistemiModel.lesson_teacher">
+              <MappingFragment StoreEntitySet="lesson_teacher">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="lesson_id" ColumnName="lesson_id" />
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="donem" ColumnName="donem" />
+                <ScalarProperty Name="lesson_teacher_lastchange" ColumnName="lesson_teacher_lastchange" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="lessons">
+            <EntityTypeMapping TypeName="ogrencisistemiModel.lessons">
+              <MappingFragment StoreEntitySet="lessons">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="lesson_name" ColumnName="lesson_name" />
+                <ScalarProperty Name="lesson_code" ColumnName="lesson_code" />
+                <ScalarProperty Name="akts" ColumnName="akts" />
+                <ScalarProperty Name="lesson_lastchange" ColumnName="lesson_lastchange" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="login">
+            <EntityTypeMapping TypeName="ogrencisistemiModel.login">
+              <MappingFragment StoreEntitySet="login">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="login1" ColumnName="login" />
+                <ScalarProperty Name="login_lastlogin" ColumnName="login_lastlogin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="position">
+            <EntityTypeMapping TypeName="ogrencisistemiModel.position">
+              <MappingFragment StoreEntitySet="position">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="position_name" ColumnName="position_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="studentlessons">
+            <EntityTypeMapping TypeName="ogrencisistemiModel.studentlessons">
+              <MappingFragment StoreEntitySet="studentlessons">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="teacher_lesson" ColumnName="teacher_lesson" />
+                <ScalarProperty Name="grade" ColumnName="grade" />
+                <ScalarProperty Name="studentlesson_lastchange" ColumnName="studentlesson_lastchange" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="students">
+            <EntityTypeMapping TypeName="ogrencisistemiModel.students">
+              <MappingFragment StoreEntitySet="students">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="student_no" ColumnName="student_no" />
+                <ScalarProperty Name="student_password" ColumnName="student_password" />
+                <ScalarProperty Name="student_name" ColumnName="student_name" />
+                <ScalarProperty Name="student_email" ColumnName="student_email" />
+                <ScalarProperty Name="student_tckn" ColumnName="student_tckn" />
+                <ScalarProperty Name="student_phoneno" ColumnName="student_phoneno" />
+                <ScalarProperty Name="student_status" ColumnName="student_status" />
+                <ScalarProperty Name="student_lastchange" ColumnName="student_lastchange" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

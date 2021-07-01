@@ -1,0 +1,58 @@
+﻿@model IEnumerable<OBS.Models.employee>
+
+<p>
+    @Html.ActionLink("Add New Employee", "Officer")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.employee_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.employee_email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.employee_tckn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.employee_phoneno)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.emoployee_status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.position.position_name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.employee_name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.employee_email)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.employee_tckn)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.employee_phoneno)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.emoployee_status)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.position.position_name)
+    </td>
+    <td>
+        @Html.ActionLink("Edit Employee", "EditEmployee", new { id = item.id })
+    </td>
+    <td>
+        @Html.ActionLink("Remove Employee", "RemoveEmployee", new { id = item.id })
+    </td>
+</tr>
+}
+
+</table>

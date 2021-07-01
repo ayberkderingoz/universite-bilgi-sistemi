@@ -1,0 +1,133 @@
+﻿@model OBS.Models.TeacherModel.TeacherModel
+
+
+@{
+    var list = ViewBag.notGradedLessons;
+    var graded = ViewBag.gradedLessons;
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div class="jumbotron">
+
+    @foreach (var item in ViewBag.Teacher)
+    {
+        <h4>
+            @Html.Raw(item)
+        </h4>
+
+    }
+
+</div>
+<table class="table">
+    <tr>
+        <th>
+            Student Number
+        </th>
+        <th>
+            Student Name
+        </th>
+        <th>
+            Lesson Name
+        </th>
+        <th>
+            Grade
+        </th>
+        <th>
+            Edit Grade
+        </th>
+    </tr>
+    @foreach (var item in graded)
+    {
+        <tr>
+            <td>
+                @item.studentno
+            </td>
+            <td>
+                @item.studentname
+            </td>
+            <td>
+                @item.LessonName
+            </td>
+            <td>
+                @item.grade
+            </td>
+            <td>
+                @using (@Html.BeginForm("Teacher", "Teacher", FormMethod.Post))
+                {
+                    @Html.HiddenFor(m => m.studentno, new { Value = item.studentno })
+                    @Html.HiddenFor(m => m.studentname, new { Value = item.studentname })
+                    @Html.HiddenFor(m => m.LessonName, new { Value = item.LessonName })
+                    @Html.LabelFor(m => m.grade, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.EditorFor(m => m.grade, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Notu Düzenle" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+
+            </td>
+
+
+        </tr>
+    }
+</table>
+<table class="table">
+    <tr>
+        <th>
+            Student Number
+        </th>
+        <th>
+            Student Name
+        </th>
+        <th>
+            Lesson Name
+        </th>
+        <th>
+            Grade
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in list)
+    {
+        <tr>
+            <td>
+                @item.studentno
+            </td>
+            <td>
+                @item.studentname
+            </td>
+            <td>
+                @item.LessonName
+            </td>
+            <td>
+                @using (@Html.BeginForm("Teacher", "Teacher", FormMethod.Post))
+                {
+                    @Html.HiddenFor(m => m.studentno, new { Value = item.studentno })
+                    @Html.HiddenFor(m => m.studentname, new { Value = item.studentname })
+                    @Html.HiddenFor(m => m.LessonName, new { Value = item.LessonName })
+                    @Html.LabelFor(m => m.grade, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.EditorFor(m => m.grade, new { htmlAttributes = new { @class = "form-control" } })
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Not Ekle" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+
+            </td>
+
+
+        </tr>
+
+
+
+    }
+
+</table>

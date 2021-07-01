@@ -1,0 +1,68 @@
+﻿
+@model OBS.Models.lesson_teacher
+@{
+    var list = ViewBag.studentList;
+    var values = ViewBag.lessons;
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="jumbotron">
+    <h3>
+        @foreach (var item in ViewBag.User)
+        {
+            <h4>
+                @Html.Raw(item)
+            </h4>
+
+        }
+    </h3>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            LESSON NAME
+        </th>
+        <th>
+            TEACHER NAME
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in list)
+    {
+        <tr>
+            <td>
+                @item.LessonName
+            </td>
+            <td>
+                @item.TeacherName
+            </td>
+            <td>
+                @using (@Html.BeginForm("RemoveLesson", "Grades", FormMethod.Post))
+                {
+                    @Html.HiddenFor(m => m.lessons.lesson_name, new { Value = item.LessonName })
+                    @Html.HiddenFor(m => m.employee.employee_name, new { Value = item.TeacherName })
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Dersi Sil" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+
+            </td>
+        </tr>
+    }
+
+</table>
+@using (@Html.BeginForm("AddLesson", "Grades", FormMethod.Post))
+{
+    @Html.DropDownListFor(m => m.id, (IEnumerable<SelectListItem>)values, new { @class = "input100" })
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Ders Ekle" class="btn btn-default" />
+        </div>
+    </div>
+}
+
